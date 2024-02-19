@@ -1,47 +1,31 @@
 import React from 'react'
-import banner1 from '../assets/img/banner1.jpg'
-import banner2 from '../assets/img/banner2.jpg'
-import banner3 from '../assets/img/banner3.jpg'
-import Carousel from 'react-bootstrap/Carousel';
-
-export const Banner = () => {
-  return (
-      <section className="banner-section">
-          <div className="banner-carousel">
-              <Carousel>
-                  <Carousel.Item>
-                      <div className="slide-item" style={{ backgroundImage: `url(${banner1})` }}>
-                          <div className="auto-container">
-                              <div className="content-box">
-                                  <h2><span>Unique Sports Bar <br />in Mumbai</span></h2>
-                              </div>
-                          </div>
-                      </div>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                      <div className="slide-item" style={{ backgroundImage: `url(${banner2})` }}>
-                          <div className="auto-container">
-                              <div className="content-box">
-                                  <h2><span>Sports, Music, Fun,<br /> Cheer</span></h2>
-                              </div>
-                          </div>
-                      </div>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                      <div className="slide-item" style={{ backgroundImage: `url(${banner3})` }}>
-                          <div className="auto-container">
-                              <div className="content-box">
-                                  <h2><span>A place to get together <br />and cheer!!</span></h2>
-                              </div>
-                          </div>
-                      </div>
-                  </Carousel.Item>
-              </Carousel>
-
-              {/* Slide Item */}
+import OwlCarousel from 'react-owl-carousel';
 
 
-          </div>
-      </section>
-  )
+export const Banner = ({ bannerData, baseUrl }) => {
+    // console.log(`bannerData==>`, bannerData);
+    const option = {
+        items: 1,
+        loop: true,
+        autoplay: true, autoplayTimeout: 3000, nav: false, dots: false,
+    }
+    return (
+        <section className="banner-section">
+            <OwlCarousel className="banner-carousel abtpbnr owl-carousel owl-theme" {...option}>
+                {bannerData.length > 0 &&
+                    bannerData.map((val, idx) => {
+                        return (
+                            <div className="slide-item" style={{ backgroundImage: `url(${baseUrl + val?.media})` }}>
+                                <div className="auto-container">
+                                    <div className="content-box abtinpt">
+                                        <h2><span>{val?.header}</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </OwlCarousel>
+        </section >
+    )
 }

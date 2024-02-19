@@ -1,113 +1,301 @@
-import React from 'react'
-import { Header } from '../components/Header.js';
-import { Banner } from '../components/Banner.js';
-import { Footer } from '../components/Footer.js';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Banner } from '../components/Banner'
 import OwlCarousel from 'react-owl-carousel';
 import {
-    sprtbr, sprtbe2, fastfood1, fastfood2, gallery1,
-    gallery2,
-    gallery3,
-    gallery4,
-    gallery5,
-    gallery6,
-    gallery7,
-    gallery8,
     qutn
 } from '../services/images.js';
+import { useLocation } from 'react-router-dom';
+import { Fancybox } from '../services/helper.js';
+import { getData } from '../services/apiService.js';
+import { api_url, base_url } from '../services/env.js';
+import PopUp from '../components/PopUp.js';
+import Toast from 'react-bootstrap/Toast'
+import { ToastContainer } from 'react-bootstrap'
+
+
 const Home = () => {
     const option = {
         items: 4,
-        loop: true,
         autoplay: true, autoplayTimeout: 3000,
-        animateOut: 'slideOutUp', nav: false, dots: false, margin: 30
+        animateOut: 'slideOutUp', nav: false, dots: false, margin: 30, responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1024: {
+                items: 3
+            },
+        }
     }
+    const { pathname } = useLocation();
+    const [baseUrl, setBaseUrl] = useState(null);
+    const [homeData, setHomeData] = useState({
+        bannerData: [],
+        availOffers: [],
+        gallery: [],
+        testimonial: [],
+        ourStory: null,
+        ourBlog: []
+    });
+    const [textMessage, setTextMessage] = useState('');
+    const [show, setShow] = useState(false);
+    const [backgrond, setBackgrond] = useState('success');
+    const [popUp, setPopUp] = useState(null)
+    const [formData, setFormData] = useState({
+        name: '',
+        person_count: '',
+        date: '',
+        booking_time: '',
+        phone: ''
+    });
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        console.log(`name, value==>`, name, value);
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let values = document.getElementById('bookINForm')
+
+        console.log(formData)
+        const data = new FormData();
+        data.append('name', formData.name);
+        data.append('booking_date', formData.date);
+        data.append('booking_time', formData.booking_time);
+        data.append('person_count', formData.person_count);
+        data.append('phone', formData.phone);
+        console.log(`data==>`, data);
+        try {
+            const res = await fetch(
+                base_url + api_url?.bookIn,
+                {
+                    method: 'POST',
+                    body: data,
+                },
+            );
+            if (res.ok) {
+                values.reset();
+                setFormData({
+                    name: '',
+                    person_count: '',
+                    date: '',
+                    booking_time: '',
+                    phone: ''
+                })
+                const resData = await res.json();
+                setBackgrond('success');
+                setTextMessage(resData.message);
+                setShow(true);
+
+            } else {
+                // Handle error response
+                const errorData = await res.json();
+                console.log("Error Data:", errorData); // Check the error data received
+                if (errorData && errorData.message) {
+                    setBackgrond('warning');
+                    setTextMessage(errorData.message);
+                } else {
+                    setBackgrond('warning');
+                    setTextMessage('An error occurred.'); // Fallback message if no specific message is provided
+                }
+                setShow(true);
+            }
+        } catch (err) {
+            setBackgrond('danger');
+            setTextMessage(err.message)
+            setShow(true);
+        }
+
+
+    };
+
+    const onClose = () => { setShow(false); }
+
+    useEffect(() => {
+        getHomePageData();
+        getAdvertData();
+    }, [])
+
+    const getHomePageData = () => {
+        getData(api_url.home)
+            .then(async response => {
+                const resp = await response.json();
+                console.warn(`resp?.data?==>`, resp);
+                setBaseUrl(resp?.base_url);
+                let banner = resp?.data.find(el => el.key_name == "Banner");
+                let story = resp?.data.find(el => el.key_name == "Content");
+                let offers = resp?.data.find(el => el.key_name == "available_offers");
+                let image = resp?.data.find(el => el.key_name == "Gallery");
+                let testi = resp?.data.find(el => el.key_name == "Testimonials");
+                let blog = resp?.data.find(el => el.key_name == "blogs");
+
+                setHomeData(prev => ({ ...prev, bannerData: banner.key_data, availOffers: offers.key_data, gallery: image.key_data, testimonial: testi.key_data, ourStory: story?.key_data[0], ourBlog: blog.key_data }));
+
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    };
+
+    const getAdvertData = () => {
+        getData(api_url.pop_up)
+            .then(async response => {
+                const resp = await response.json();
+
+                let popup = resp?.data.find(el => el.key_name == "popUp");
+                console.log(`popup==>`, popup);
+                setPopUp(popup.key_data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    // const 
+    function getCurrentDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1; // getMonth() returns 0-based index
+        let day = today.getDate();
+
+        // Add leading zeros if needed
+        if (month < 10) {
+            month = '0' + month;
+        }
+        if (day < 10) {
+            day = '0' + day;
+        }
+
+        // Return the date in the format 'YYYY-MM-DD'
+        return `${year}-${month}-${day}`;
+    }
+
     return (
-        <div>
-            <Header />
-            <Banner />
+        <>
 
-            {/* About Section  */}
+            {homeData.bannerData.length > 0 && <Banner baseUrl={baseUrl} bannerData={homeData?.bannerData} />}
+
+
             <section className="about-section secexp bgdep2">
                 <div className="auto-container">
                     <div className="row">
-                        {/* Content Column */}
-                        <div className=" col-lg-12 col-md-12 col-sm-12 wow fadeInUp">
-                            <div className="abtsctx ">
-                                <div className="sechdttl">
-                                    <h4>Our Story</h4>
-                                    <h2>Introducing the finest <br />sports bar experience</h2>
+                        {
+                            homeData?.ourStory &&
+                            <div className=" col-lg-12 col-md-12 col-sm-12 wow fadeInUp">
+                                <div className="abtsctx">
+                                    <div className="sechdttl">
+                                        <h4>{homeData?.ourStory.title}</h4>
+                                        <h2 dangerouslySetInnerHTML={
+                                            { __html: homeData?.ourStory?.header }
+                                        }></h2>
+                                    </div>
+                                    <div className='abtsctx' dangerouslySetInnerHTML={
+                                        { __html: homeData?.ourStory?.description }
+                                    }>
+                                    </div>
                                 </div>
-                                <p>Step in at Captain's Deck and prepare for an exhilarating voyage into the heart of sports fanaticism like never before. Prepare to embark on a thrilling journey where you are greeted by the thunderous roar of passionate fans, their spirits soaring as they rally behind their favourite teams on colossal screens that dominate the space.</p>
-                                <p>With an exciting atmosphere, this is more than simply a pub; it's a buzzing cathedral of sporting triumph.The air is electrifying, infused with the fervour that only sports fans can generate. You can feelthe cheers, laughter, and the clinking of glasses, celebrating the favourite moments in sports.</p>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </section>
-            {/* End About Section */}
-
-            {/* About Section */}
-            <section className="about-section secexp bgdep">
-                <div className="auto-container">
-                    <div className="row">
-                        {/* Content Column */}
-                        <div className=" col-lg-6 col-md-6 col-sm-12 order-md-2 wow fadeInRight">
-                            <div className="uspimg">
-                                <img src={sprtbr} />
-                            </div>
-                        </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInLeft">
-                            <div className="abtsctx ">
-                                <div className="sechdttl text-left">
-                                    <h4>OUR USP</h4>
-                                    <h2>ENTHUSIASM FOR SPORTS AND GREAT FOOD</h2>
+            <ToastContainer position="top-end" className="p-3 position-fixed" style={{ zIndex: 9999 }}>
+                <Toast onClose={onClose} show={show} delay={3000} bg={backgrond} autohide>
+                    <Toast.Header>
+                        <strong className="me-auto">Captains Deck</strong>
+                    </Toast.Header>
+                    <Toast.Body id='toast_body' className='text-white'>{textMessage}</Toast.Body>
+                </Toast>
+            </ToastContainer>
+            {homeData.ourBlog.length > 0 &&
+                homeData.ourBlog.map((val, idx) => {
+                    return (
+                        idx % 2 == 0 ? (
+                            <section className="about-section secexp bgdep" key={idx}>
+                                <div className="auto-container">
+                                    <div className="row">
+                                        {/* Content Column */}
+                                        <div className="col-lg-6 col-md-6 col-sm-12 order-md-2 wow fadeInRight">
+                                            <div className="uspimg">
+                                                <img src={baseUrl + val?.media} />
+                                            </div>
+                                        </div>
+                                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInLeft">
+                                            <div className="abtsctx">
+                                                <div className="sechdttl text-left">
+                                                    <h4>{val?.title}</h4>
+                                                    <div className="sechdttl text-left" dangerouslySetInnerHTML={
+                                                        { __html: val?.header }
+                                                    } />
+                                                </div>
+                                                <div className="abtsctx" dangerouslySetInnerHTML={
+                                                    { __html: val?.description }
+                                                } />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="text-left">Captain’s Deck offers an eclectic ambiance where we've gone beyond the ordinary to create a paradise where two loves converge in wonderful harmony: sports and gastronomy.</p>
-                                <p className="text-left">At Captain's Deck, we have an unwavering commitment to deliver not just an exciting sports bar experience, but great food that's quirky, adventurous, and sure to tickle your taste buds.</p>
-                                <p className="text-left">Step into “Captain’s Deck” and let your senses embark on a voyage of delight, where the boundaries between taste and triumph dissolve, and your love for sports and great food finds its perfect destination.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {/*End About Section */}
-
-
-            {/* About Section */}
-            <section className="about-section secexp bgdep2">
-                <div className="auto-container">
-                    <div className="row">
-                        {/* Content Column */}
-                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInRight">
-                            <div className="livimg"><img src={sprtbe2} /></div>
-                        </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInLeft">
-                            <div className="abtsctx ">
-                                <div className="sechdttl text-left">
-                                    <h4> Live Entertainment</h4>
-                                    <h2>WATCH,EAT,ENJOY!</h2>
+                            </section>
+                        ) : (
+                            <section className="about-section secexp bgdep2" key={idx}>
+                                <div className="auto-container">
+                                    <div className="row">
+                                        {/* Content Column */}
+                                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInRight">
+                                            <div className="livimg">
+                                                <img src={baseUrl + val?.media} /></div>
+                                        </div>
+                                        <div className=" col-lg-6 col-md-6 col-sm-12 wow fadeInLeft">
+                                            <div className="abtsctx ">
+                                                <div className="sechdttl text-left">
+                                                    <h4>{val?.title}</h4>
+                                                    <div className="sechdttl text-left" dangerouslySetInnerHTML={
+                                                        { __html: val?.header }
+                                                    } />
+                                                </div>
+                                                <div className="abtsctx" dangerouslySetInnerHTML={
+                                                    { __html: val?.description }
+                                                } />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="text-left">Experience heart-pounding excitement each day at Studs Sports Bar &amp; Grill's. Join the fervent crowd as they cheer, strategize, and compete in epic challenges. From thrilling trivia showdowns to pulse-pounding gaming tournaments, it's an electrifying spectacle of camaraderie and competition.</p>
-                                <p className="text-left">Savor delectable bites, sip on refreshing drinks, and be part of an unforgettable sports community. Game Nights at Studs—where friendships are forged, champions rise, and the thrill of victory reigns supreme. Don't miss a single exhilarating moment!!!!!!!
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {/*End About Section */}
-            {/* About Section */}
+                            </section>
+                        )
+                    )
+                })
+            }
+
+            {popUp && <PopUp popUp={popUp} baseUrl={baseUrl} />}
+
+
             <section className="about-section secexp bgdep">
                 <div className="auto-container">
                     <div className="sechdttl wow fadeInUp">
                         <h4>Reservations</h4>
                         <h2><span>BOOK A TABLE <div className="ttlhdb1" /><div className="ttlhdb2" /></span></h2>
                     </div>
-                    <form className="bktfmmn wow fadeInUp">
+
+                    <form className="bktfmmn wow fadeInUp" id='bookINForm' >
                         <div className="row">
-                            <div className=" col-lg-3 col-md-3 col-sm-6">
+                            <div className="col-lg-2 col-md-3 col-sm-6">
                                 <div className="bktbfm">
-                                    <select>
+                                    <input placeholder="Name" type='text' required name='name' value={formData.name} onChange={handleChange} />
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-3 col-sm-6">
+                                <div className="bktbfm">
+                                    <select name="person_count" value={formData.person_count} onChange={handleChange} required>
+                                        <option >Person Count</option>
                                         <option value={1}>1 Person</option>
                                         <option value={2}>2 People</option>
                                         <option value={3}>3 People</option>
@@ -121,14 +309,15 @@ const Home = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-6">
+                            <div className="col-lg-2 col-md-3 col-sm-6">
                                 <div className="bktbfm">
-                                    <input type="text" className="datepicker_input form-control border-2" id="datepicker1" required placeholder="DD/MM/YYYY" />
+                                    <input type="date" className="datepicker_input form-control border-2" id="datepicker1" required placeholder="DD/MM/YYYY" name="date" value={formData.date} onChange={handleChange} min={getCurrentDate()} />
                                 </div>
                             </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-6">
+                            <div className="col-lg-2 col-md-3 col-sm-6">
                                 <div className="bktbfm">
-                                    <select>
+                                    <select name="booking_time" value={formData.booking_time} onChange={handleChange} required>
+                                        <option  >Booking Time</option>
                                         <option value="16:30">04:30 pm</option>
                                         <option value="17:00">05:00 pm</option>
                                         <option value="17:30">05:30 pm</option>
@@ -148,173 +337,141 @@ const Home = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-6">
+                            <div className="col-lg-2 col-md-3 col-sm-6">
                                 <div className="bktbfm">
-                                    <button className="theme-btn btn-style-one w100"><span className="btn-title">BOOK NOW</span></button>
+                                    <input placeholder="Phone No." type='tel' required name='phone' value={formData.phone} onChange={handleChange} />
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-3 col-sm-6 mx-auto">
+                                <div className="bktbfm">
+                                    <button type="button" onClick={handleSubmit} className="theme-btn btn-style-one w100"><span className="btn-title">BOOK NOW</span></button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </section>
-            {/*End About Section */}
 
-            {/* About Section */}
             <section className="about-section secexp bgdep2 ofdmnd">
                 <div className="auto-container">
-                    <div className="row">
-                        {/* Content Column */}
-                        <div className=" col-lg-1 col-md-1 col-sm-10">
-                        </div>
-                        <div className=" col-lg-5 col-md-5 col-sm-12">
-                            <div className="fdofr1 wow fadeInLeft">
-                                <h2>Exclusive Offer!</h2>
-                                <h3>Get 30% - 40% Off <br />on Fast Food</h3>
+                    {homeData.availOffers.length > 0 &&
+                        <div className="row">
+
+                            <div className=" col-lg-1 col-md-1 col-sm-10">
                             </div>
-                        </div>
-                        <div className=" col-lg-6 col-md-6 col-sm-12">
-                            <div className="fdofr2 wow fadeInRight">
-                                <div className="row">
-                                    <div className="col-md-6 col-sm-6">
-                                        <div className="fdofr2im">
-                                            <img src={fastfood1} />
-                                            <div className="fdofr2mtx">
-                                                <h3>Get 30%-40% Off on Fast Food</h3>
+                            <div className=" col-lg-5 col-md-5 col-sm-12">
+                                <div className="fdofr1 wow fadeInLeft">
+                                    <h2>{homeData.availOffers[0].header}</h2>
+                                    <h3>{homeData.availOffers[0].description}</h3>
+                                </div>
+                            </div>
+                            <div className=" col-lg-6 col-md-6 col-sm-12">
+                                <div className="fdofr2 wow fadeInRight">
+                                    <div className="row">
+                                        {homeData.availOffers.map((val, idx) =>
+                                            <div className="col-md-6 col-sm-6" key={idx}>
+                                                <div className="fdofr2im">
+                                                    <img src={baseUrl + val?.media} />
+                                                    <div className="fdofr2mtx">
+                                                        <h3>{val?.description}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>)
+                                        }
+
+                                        {/* <div className="col-md-6 col-sm-6">
+                                            <div className="fdofr2im">
+                                                <img src={fastfood2} />
+                                                <div className="fdofr2mtx">
+                                                    <h3>Get 30%-40% Off on Fast Food every <br /><span>Sunday</span></h3>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 col-sm-6">
-                                        <div className="fdofr2im">
-                                            <img src={fastfood2} />
-                                            <div className="fdofr2mtx">
-                                                <h3>Get 30%-40% Off on Fast Food every <br /><span>Sunday</span></h3>
-                                            </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </section>
-            {/*End About Section */}
 
-            {/* About Section */}
             <section className="about-section secexp bgdep">
                 <div className="auto-container">
                     <div className="sechdttl wow fadeInUp">
-                        {/*<h4>Food Gallery</h4>*/}
                         <h2><span>Gallery <div className="ttlhdb1" /><div className="ttlhdb2" /></span></h2>
                     </div>
-                    <div className="glrydv wow fadeInUp">
-                        <OwlCarousel className='carousel_slide4 products-style-2 nav-style-2 owl-carousel owl-theme' {...option}>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery1.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery1} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery2.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery1} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery3.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery2} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery4.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery3} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery5.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery4} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery6.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery5} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery7.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery6} />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="glrbim">
-                                    <a href="images/gallery8.jpg" className="lightbox-image" data-fancybox="gallery">
-                                        <img src={gallery7} />
-                                    </a>
-                                </div>
-                            </div>
-                        </OwlCarousel>
-                    </div>
-                </div>
-            </section>
-            {/*End About Section */}
+                    {homeData?.gallery.length > 0 &&
+                        <div className="glrydv wow fadeInUp">
+                            <Fancybox
+                                options={{
+                                    Carousel: {
+                                        infinite: false,
+                                    },
+                                }}
+                            >
 
-            <section className="about-section secexp bgdep2">
-                <div className="auto-container">
-                    <div className="sechdttl wow fadeInUp">
-                        <h4>Testimonials</h4>
-                        <h2><span>What Our Clients Says <div className="ttlhdb1" />
-                            <div className="ttlhdb2" />
-                        </span></h2>
-                    </div>
-                    <div className="clttst wow fadeInUp">
-                        <div className="clttstic">
-                            <img src={qutn} />
+                                <OwlCarousel className='carousel_slide4 products-style-2 nav-style-2 owl-carousel owl-theme' {...option}>
+                                    {
+                                        homeData?.gallery.map((val, idx) => {
+                                            return val.media_types == 'image' &&
+                                                <div className="item" key={idx}>
+                                                    <div className="glrbim">
+
+                                                        <a href={baseUrl + val?.media} className="lightbox-image" data-fancybox="gallery">
+
+                                                            <img src={baseUrl + val?.media} />
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+
+                                        })
+                                    }
+
+
+                                </OwlCarousel>
+                            </Fancybox>
                         </div>
-                        <OwlCarousel className="carousel_slide01 products-style-2 nav-style-2 owl-carousel owl-theme" margin={30} dots={true} autoplay={true} loop={true} items={1}>
-                            <div className="item" nav={false}>
-                                <div className="tstx">
-                                    <p>It is a long established fact that a reader will be distracted by the readable
-                                        content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-                                    <h3>Bikash Mitra</h3>
-                                    <h4>Kolkata</h4>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="tstx">
-                                    <p>It is a long established fact that a reader will be distracted by the readable
-                                        content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-                                    <h3>Rahul Saha</h3>
-                                    <h4>Kolkata</h4>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="tstx">
-                                    <p>It is a long established fact that a reader will be distracted by the readable
-                                        content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-                                    <h3>Rabib Biswas</h3>
-                                    <h4>Kolkata</h4>
-                                </div>
-                            </div>
-                        </OwlCarousel>
-                    </div>
+                    }
                 </div>
             </section>
 
-            <Footer />
-        </div>
+            {homeData.testimonial.length > 0 &&
+                <section className="about-section secexp bgdep2">
+                    <div className="auto-container">
+                        <div className="sechdttl wow fadeInUp">
+                            <h4>Testimonials</h4>
+                            <h2><span>What Our Clients Says <div className="ttlhdb1" />
+                                <div className="ttlhdb2" />
+                            </span></h2>
+                        </div>
+                        <div className="clttst wow fadeInUp">
+                            <div className="clttstic">
+                                <img src={qutn} />
+                            </div>
+                            <OwlCarousel className="carousel_slide01 products-style-2 nav-style-2 owl-carousel owl-theme" margin={30} dots={true} autoplay={true} loop={true} items={1}>
+                                {homeData.testimonial.map((val, idx) => {
+                                    return (
+                                        <div className="item" key={idx}>
+                                            <div className="tstx" >
+                                                <p>{val?.comment}</p>
+                                                <h3>{val?.name}</h3>
+                                                <h4>Kolkata</h4>
+                                                {/* add location in testimonail section */}
+                                            </div>
+                                        </div>)
+                                })}
+
+
+                            </OwlCarousel>
+                        </div>
+                    </div>
+                </section>
+            }
+        </>
     )
 }
+
+
 
 export default Home

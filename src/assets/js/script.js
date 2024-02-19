@@ -1,3 +1,4 @@
+import $ from 'jquery';
 (function($) {
 	
 	"use strict";
@@ -18,10 +19,8 @@
 			var scrollLink = $('.scroll-to-top');
 			if (windowpos >= 1) {
 				siteHeader.addClass('fixed-header');
-				scrollLink.fadeIn(300);
 			} else {
 				siteHeader.removeClass('fixed-header');
-				scrollLink.fadeOut(300);
 			}
 		}
 	}
@@ -102,136 +101,136 @@
 	
 	
 		// Banner Carousel / Owl Carousel 
-	if ($('.banner-carousel').length) {
-		$('.banner-carousel').owlCarousel({
-			animateOut: 'fadeOut',
-		    animateIn: 'fadeIn',
-			loop:true,
-			margin:0,
-			nav:false,
-			dots:false,
-			smartSpeed: 500,
-			autoHeight: true,
-			autoplay: true,
-			autoplayTimeout:5000,
-			navText: [ '<span class="fa fa-angle-left">', '<span class="fa fa-angle-right">' ],
-			responsive:{
-				0:{
-					items:1
-				},
-				600:{
-					items:1
-				},
-				1024:{
-					items:1
-				},
-			}
-		}); 
-	}
+	// if ($('.banner-carousel').length) {
+	// 	$('.banner-carousel').owlCarousel({
+	// 		animateOut: 'fadeOut',
+	// 	    animateIn: 'fadeIn',
+	// 		loop:true,
+	// 		margin:0,
+	// 		nav:false,
+	// 		dots:false,
+	// 		smartSpeed: 500,
+	// 		autoHeight: true,
+	// 		autoplay: true,
+	// 		autoplayTimeout:5000,
+	// 		navText: [ '<span class="fa fa-angle-left">', '<span class="fa fa-angle-right">' ],
+	// 		responsive:{
+	// 			0:{
+	// 				items:1
+	// 			},
+	// 			600:{
+	// 				items:1
+	// 			},
+	// 			1024:{
+	// 				items:1
+	// 			},
+	// 		}
+	// 	}); 
+	// }
 
 	// Single Item Carousel
-	if ($('.single-item-carousel').length) {
-		$('.single-item-carousel').owlCarousel({
-			loop:true,
-			margin:0,
-			nav:true,
-			smartSpeed: 500,
-			autoplay: true,
-			navText: [ '<span class="arrow_carrot-left"></span>', '<span class="arrow_carrot-right"></span>' ],
-			responsive:{
-				0:{
-					items:1
-				},
-				600:{
-					items:1
-				},
-				1024:{
-					items:1
-				}
-			}
-		});    		
-	}
+	// if ($('.single-item-carousel').length) {
+	// 	$('.single-item-carousel').owlCarousel({
+	// 		loop:true,
+	// 		margin:0,
+	// 		nav:true,
+	// 		smartSpeed: 500,
+	// 		autoplay: true,
+	// 		navText: [ '<span class="arrow_carrot-left"></span>', '<span class="arrow_carrot-right"></span>' ],
+	// 		responsive:{
+	// 			0:{
+	// 				items:1
+	// 			},
+	// 			600:{
+	// 				items:1
+	// 			},
+	// 			1024:{
+	// 				items:1
+	// 			}
+	// 		}
+	// 	});    		
+	// }
 
 	// Gallery  Carousel
-	if ($('.gallery-carousel').length) {
-		$('.gallery-carousel').owlCarousel({
-			loop:true,
-			margin:0,
-			nav:true,
-			smartSpeed: 500,
-			autoplay: true,
-			navText: [ '<span class="arrow_carrot-left"></span>', '<span class="arrow_carrot-right"></span>' ],
-			responsive:{
-				0:{
-					items:1
-				},
-				480:{
-					items:2
-				},
-				767:{
-					items:3
-				},
-				800:{
-					items:4
-				},
-				1200:{
-					items:5
-				}
-			}
-		});    		
-	}
+	// if ($('.gallery-carousel').length) {
+	// 	$('.gallery-carousel').owlCarousel({
+	// 		loop:true,
+	// 		margin:0,
+	// 		nav:true,
+	// 		smartSpeed: 500,
+	// 		autoplay: true,
+	// 		navText: [ '<span class="arrow_carrot-left"></span>', '<span class="arrow_carrot-right"></span>' ],
+	// 		responsive:{
+	// 			0:{
+	// 				items:1
+	// 			},
+	// 			480:{
+	// 				items:2
+	// 			},
+	// 			767:{
+	// 				items:3
+	// 			},
+	// 			800:{
+	// 				items:4
+	// 			},
+	// 			1200:{
+	// 				items:5
+	// 			}
+	// 		}
+	// 	});    		
+	// }
 
 	//Clients Carousel
-	if ($('.sponsors-carousel').length) {
-		$('.sponsors-carousel').owlCarousel({
-			loop:true,
-			margin:30,
-			nav:true,
-			lazyLoad: true,
-			smartSpeed: 700,
-			autoplay: true,
-			navText: [ '<span class="la la-angle-left"></span>', '<span class="la la-angle-right"></span>' ],
-			responsive:{
-				0:{
-					items:1
-				},
-				600:{
-					items:2
-				},
-				768:{
-					items:3
-				},
-				1024:{
-					items:4
-				},
-				1200:{
-					items:5
-				}
-			}
-		});    		
-	}
+	// if ($('.sponsors-carousel').length) {
+	// 	$('.sponsors-carousel').owlCarousel({
+	// 		loop:true,
+	// 		margin:30,
+	// 		nav:true,
+	// 		lazyLoad: true,
+	// 		smartSpeed: 700,
+	// 		autoplay: true,
+	// 		navText: [ '<span class="la la-angle-left"></span>', '<span class="la la-angle-right"></span>' ],
+	// 		responsive:{
+	// 			0:{
+	// 				items:1
+	// 			},
+	// 			600:{
+	// 				items:2
+	// 			},
+	// 			768:{
+	// 				items:3
+	// 			},
+	// 			1024:{
+	// 				items:4
+	// 			},
+	// 			1200:{
+	// 				items:5
+	// 			}
+	// 		}
+	// 	});    		
+	// }
 
 	//Parallax Scene for Icons
-	if($('.parallax-scene-1').length){
-		var scene = $('.parallax-scene-1').get(0);
-		var parallaxInstance = new Parallax(scene);
-	}
-	if($('.parallax-scene-2').length){
-		var scene = $('.parallax-scene-2').get(0);
-		var parallaxInstance = new Parallax(scene);
-	}
-	if($('.parallax-scene-3').length){
-		var scene = $('.parallax-scene-3').get(0);
-		var parallaxInstance = new Parallax(scene);
-	}
-	if($('.parallax-scene-4').length){
-		var scene = $('.parallax-scene-4').get(0);
-		var parallaxInstance = new Parallax(scene);
-	}
-	if($('.parallax-scene-5').length){
-		var scene = $('.parallax-scene-5').get(0);
-		var parallaxInstance = new Parallax(scene);
-	}
+	// if($('.parallax-scene-1').length){
+	// 	var scene = $('.parallax-scene-1').get(0);
+	// 	var parallaxInstance = new Parallax(scene);
+	// }
+	// if($('.parallax-scene-2').length){
+	// 	var scene = $('.parallax-scene-2').get(0);
+	// 	var parallaxInstance = new Parallax(scene);
+	// }
+	// if($('.parallax-scene-3').length){
+	// 	var scene = $('.parallax-scene-3').get(0);
+	// 	var parallaxInstance = new Parallax(scene);
+	// }
+	// if($('.parallax-scene-4').length){
+	// 	var scene = $('.parallax-scene-4').get(0);
+	// 	var parallaxInstance = new Parallax(scene);
+	// }
+	// if($('.parallax-scene-5').length){
+	// 	var scene = $('.parallax-scene-5').get(0);
+	// 	var parallaxInstance = new Parallax(scene);
+	// }
 
 	//Masonary
 	function enableMasonry() {
@@ -266,36 +265,36 @@
 		}
 	}
 	
-	enableMasonry();
+	// enableMasonry();
 	
 	//Fact Counter + Text Count
-	if($('.count-box').length){
-		$('.count-box').appear(function(){
+	// if($('.count-box').length){
+	// 	$('.count-box').appear(function(){
 	
-			var $t = $(this),
-				n = $t.find(".count-text").attr("data-stop"),
-				r = parseInt($t.find(".count-text").attr("data-speed"), 10);
+	// 		var $t = $(this),
+	// 			n = $t.find(".count-text").attr("data-stop"),
+	// 			r = parseInt($t.find(".count-text").attr("data-speed"), 10);
 				
-			if (!$t.hasClass("counted")) {
-				$t.addClass("counted");
-				$({
-					countNum: $t.find(".count-text").text()
-				}).animate({
-					countNum: n
-				}, {
-					duration: r,
-					easing: "linear",
-					step: function() {
-						$t.find(".count-text").text(Math.floor(this.countNum));
-					},
-					complete: function() {
-						$t.find(".count-text").text(this.countNum);
-					}
-				});
-			}
+	// 		if (!$t.hasClass("counted")) {
+	// 			$t.addClass("counted");
+	// 			$({
+	// 				countNum: $t.find(".count-text").text()
+	// 			}).animate({
+	// 				countNum: n
+	// 			}, {
+	// 				duration: r,
+	// 				easing: "linear",
+	// 				step: function() {
+	// 					$t.find(".count-text").text(Math.floor(this.countNum));
+	// 				},
+	// 				complete: function() {
+	// 					$t.find(".count-text").text(this.countNum);
+	// 				}
+	// 			});
+	// 		}
 			
-		},{accY: 0});
-	}
+	// 	},{accY: 0});
+	// }
 	
 	//Tabs Box
 	if($('.tabs-box').length){
@@ -407,18 +406,18 @@
 	
 	
 	// Elements Animation
-	if($('.wow').length){
-		var wow = new WOW(
-		  {
-			boxClass:     'wow',      // animated element css class (default is wow)
-			animateClass: 'animated', // animation css class (default is animated)
-			offset:       0,          // distance to the element when triggering the animation (default is 0)
-			mobile:       true,       // trigger animations on mobile devices (default is true)
-			live:         true       // act on asynchronously loaded content (default is true)
-		  }
-		);
-		wow.init();
-	}
+	// if($('.wow').length){
+	// 	var wow = new WOW(
+	// 	  {
+	// 		boxClass:     'wow',      // animated element css class (default is wow)
+	// 		animateClass: 'animated', // animation css class (default is animated)
+	// 		offset:       0,          // distance to the element when triggering the animation (default is 0)
+	// 		mobile:       true,       // trigger animations on mobile devices (default is true)
+	// 		live:         true       // act on asynchronously loaded content (default is true)
+	// 	  }
+	// 	);
+	// 	wow.init();
+	// }
 
 
 /* ==========================================================================
@@ -434,294 +433,294 @@
    ========================================================================== */
 	
 	$(window).on('load', function() {
-		handlePreloader();
-		enableMasonry();
+		// handlePreloader();
+		// enableMasonry();
 	});	
 
 })(window.jQuery);
 
 
 
-$(window).on('load',function(){
-		$('.carousel_slide1').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				margin: $carousel.data("margin"),
-				loop : $carousel.data("loop"),
-				items : 1,
-				autoHeight: $carousel.data("autoHeight"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplay : $carousel.data("autoplay"),
-				animateIn : $carousel.data("animate-in"),
-				animateOut: $carousel.data("animate-out"),
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-			});
-		});
+// $(window).on('load',function(){
+// 		$('.carousel_slide1').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				margin: $carousel.data("margin"),
+// 				loop : $carousel.data("loop"),
+// 				items : 1,
+// 				autoHeight: $carousel.data("autoHeight"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplay : $carousel.data("autoplay"),
+// 				animateIn : $carousel.data("animate-in"),
+// 				animateOut: $carousel.data("animate-out"),
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 			});
+// 		});
 		
-		$('.carousel_slide2').each( function() {
-			 var $carousel = $(this);
-			 $carousel.owlCarousel({
-				 loop: $carousel.data("loop"),
-				 margin: $carousel.data("margin"),
-				 dots : $carousel.data("dots"),
-				 autoHeight: true,
-				 rewind: $carousel.data("rewind"),
-				 autoplay : $carousel.data("autoplay"),
-				 nav: $carousel.data("nav"),
-				 navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				 autoplayTimeout : $carousel.data("autoplay-timeout"),
-				 responsive: {
-					 0: {
-						 items: 1,
-					 },
-					 380: {
-						 items: 1,
-					 },
-					 576: {
-						 items: 2,
-					 },
-					 1000: {
-						 items: 2,
-					 },
-					 1199: {
-						 items: 2
-					 }
-				 }
-			});
-		});
+// 		$('.carousel_slide2').each( function() {
+// 			 var $carousel = $(this);
+// 			 $carousel.owlCarousel({
+// 				 loop: $carousel.data("loop"),
+// 				 margin: $carousel.data("margin"),
+// 				 dots : $carousel.data("dots"),
+// 				 autoHeight: true,
+// 				 rewind: $carousel.data("rewind"),
+// 				 autoplay : $carousel.data("autoplay"),
+// 				 nav: $carousel.data("nav"),
+// 				 navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				 autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				 responsive: {
+// 					 0: {
+// 						 items: 1,
+// 					 },
+// 					 380: {
+// 						 items: 1,
+// 					 },
+// 					 576: {
+// 						 items: 2,
+// 					 },
+// 					 1000: {
+// 						 items: 2,
+// 					 },
+// 					 1199: {
+// 						 items: 2
+// 					 }
+// 				 }
+// 			});
+// 		});
 
-		$('.carousel_slide3').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				loop: $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				dots : $carousel.data("dots"),
-				autoHeight: false,
-				lazyLoad : true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 2,
-					},
-					1000: {
-						items: 3,
-					},
-					1199: {
-						items: 3
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide3').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				loop: $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				dots : $carousel.data("dots"),
+// 				autoHeight: false,
+// 				lazyLoad : true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 2,
+// 					},
+// 					1000: {
+// 						items: 3,
+// 					},
+// 					1199: {
+// 						items: 3
+// 					}
+// 				}
+// 			});
+// 		});
 		 
-		$('.carousel_slide4').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				loop : $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				autoHeight: true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 2,
-					},
-					992: {
-						items: 3,
-					},
-					1199: {
-						items: 4
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide4').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				loop : $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				autoHeight: true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 2,
+// 					},
+// 					992: {
+// 						items: 3,
+// 					},
+// 					1199: {
+// 						items: 4
+// 					}
+// 				}
+// 			});
+// 		});
 		
-		$('.carousel_slide5').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				loop : $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				autoHeight: true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 2,
-					},
-					768: {
-						items: 3,
-					},
-					992: {
-						items: 4,
-					},
-					1199: {
-						items: 5
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide5').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				loop : $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				autoHeight: true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 2,
+// 					},
+// 					768: {
+// 						items: 3,
+// 					},
+// 					992: {
+// 						items: 4,
+// 					},
+// 					1199: {
+// 						items: 5
+// 					}
+// 				}
+// 			});
+// 		});
 		
-		$('.carousel_slide6').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				loop : $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				autoHeight: true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 2,
-					},
-					768: {
-						items: 3,
-					},
-					992: {
-						items: 4,
-					},
-					1199: {
-						items: 4
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide6').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				loop : $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				autoHeight: true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 2,
+// 					},
+// 					768: {
+// 						items: 3,
+// 					},
+// 					992: {
+// 						items: 4,
+// 					},
+// 					1199: {
+// 						items: 4
+// 					}
+// 				}
+// 			});
+// 		});
 		
-		$('.carousel_slide7').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				loop : $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				autoHeight: true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 2,
-					},
-					768: {
-						items: 3,
-					},
-					992: {
-						items: 4,
-					},
-					1199: {
-						items: 7
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide7').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				loop : $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				autoHeight: true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 2,
+// 					},
+// 					768: {
+// 						items: 3,
+// 					},
+// 					992: {
+// 						items: 4,
+// 					},
+// 					1199: {
+// 						items: 7
+// 					}
+// 				}
+// 			});
+// 		});
 		
-		$('.carousel_slide01').each( function() {
-			var $carousel = $(this);
-			$carousel.owlCarousel({
-				dots : $carousel.data("dots"),
-				loop : $carousel.data("loop"),
-				margin: $carousel.data("margin"),
-				autoHeight: true,
-				rewind: $carousel.data("rewind"),
-				autoplay : $carousel.data("autoplay"),
-				nav: $carousel.data("nav"),
-				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
-				autoplayTimeout : $carousel.data("autoplay-timeout"),
-				responsive: {
-					0: {
-						items: 1,
-					},
-					380: {
-						items: 1,
-					},
-					576: {
-						items: 1,
-					},
-					1000: {
-						items: 1,
-					},
-					1199: {
-						items: 1
-					}
-				}
-			});
-		});
+// 		$('.carousel_slide01').each( function() {
+// 			var $carousel = $(this);
+// 			$carousel.owlCarousel({
+// 				dots : $carousel.data("dots"),
+// 				loop : $carousel.data("loop"),
+// 				margin: $carousel.data("margin"),
+// 				autoHeight: true,
+// 				rewind: $carousel.data("rewind"),
+// 				autoplay : $carousel.data("autoplay"),
+// 				nav: $carousel.data("nav"),
+// 				navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+// 				autoplayTimeout : $carousel.data("autoplay-timeout"),
+// 				responsive: {
+// 					0: {
+// 						items: 1,
+// 					},
+// 					380: {
+// 						items: 1,
+// 					},
+// 					576: {
+// 						items: 1,
+// 					},
+// 					1000: {
+// 						items: 1,
+// 					},
+// 					1199: {
+// 						items: 1
+// 					}
+// 				}
+// 			});
+// 		});
 		
 		
 		
-		$('.hdr_righbcl').click(function(){
-		  $('.hdr_righbsh').hide();
-		});
+// 		$('.hdr_righbcl').click(function(){
+// 		  $('.hdr_righbsh').hide();
+// 		});
 
-		$('.hdr_righb').click(function(){
-		  $('.hdr_righbsh').show();
-		});
+// 		$('.hdr_righb').click(function(){
+// 		  $('.hdr_righbsh').show();
+// 		});
 		
-		$('.fdmnutb li').on('click', function() {
-			$(this).addClass('actfdmn').siblings().removeClass('actfdmn');
-		});
+// 		$('.fdmnutb li').on('click', function() {
+// 			$(this).addClass('actfdmn').siblings().removeClass('actfdmn');
+// 		});
 		
-		$('.popupimgcl').click(function(){
-		  $('.popupimg').hide();
-		});
+// 		$('.popupimgcl').click(function(){
+// 		  $('.popupimg').hide();
+// 		});
 		
-		$('.wtsttxbt1').click(function(){
-		  $('.whstpop1').show();
-		});
-		$('.wtsttxbt2').click(function(){
-		  $('.whstpop2').show();
-		});
+// 		$('.wtsttxbt1').click(function(){
+// 		  $('.whstpop1').show();
+// 		});
+// 		$('.wtsttxbt2').click(function(){
+// 		  $('.whstpop2').show();
+// 		});
 		
-		$('.whstpopu1').click(function(){
-		  $('.whstpop').hide();
-		});
+// 		$('.whstpopu1').click(function(){
+// 		  $('.whstpop').hide();
+// 		});
 		
 		
-	});
+// 	});

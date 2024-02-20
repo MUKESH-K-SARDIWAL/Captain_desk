@@ -55,7 +55,7 @@ const Footer = memo(function Footer() {
                                 <div className="ftebxd">
                                     <h3>Order Online</h3>
                                     <p>{footerData?.order_online}</p>
-                                    <h4><a href="tel:+918597898654">{footerData?.phone_code + ' ' + footerData?.contact}</a></h4>
+                                    <h4><a>{footerData?.phone_code + ' ' + footerData?.contact}</a></h4>
                                 </div>
                             </div>
                             <div className="col-md-4 col-sm-4 wow fadeInUp">

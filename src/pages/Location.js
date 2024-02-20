@@ -13,6 +13,7 @@ const Location = () => {
     const [textMessage, setTextMessage] = useState('');
     const [show, setShow] = useState(false);
     const [backgrond, setBackgrond] = useState('success');
+
     useEffect(() => {
         getLoctionData();
     }, []);
@@ -22,7 +23,8 @@ const Location = () => {
         getData(api_url.contactInfo)
             .then(async (response) => {
                 const resp = await response.json();
-                setLocationData(resp?.data)
+                setLocationData(resp?.data);
+
             })
             .catch((err) => { console.log(err) })
     }
@@ -112,7 +114,7 @@ const Location = () => {
                                 <div className="contptxu">
                                     <img src={cont1} />
                                     <h6>Call Us</h6>
-                                    <p><a href="tel:+918597898654">{locationData.phone_code +' '+ locationData.contact}</a></p>
+                                    <p><a href="tel:+918597898654">{locationData.phone_code + ' ' + locationData.contact}</a></p>
                                 </div>
                                 <div className="contptxu">
                                     <img src={cont2} />
@@ -160,7 +162,10 @@ const Location = () => {
                 </div>
             </section>
 
-            {locationData && <iframe src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1842.8646535484559!2d${locationData.Longitude}!3d${locationData.Latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02715bba14eeff%3A0x4a7e4f2267f8f3fa!2sCaptain's%20Deck%20Bar%20And%20Grill!5e0!3m2!1sen!2sin!4v1686213983565!5m2!1sen!2sin`} width="100%" height={350} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            {locationData &&
+                <div id="iframe" dangerouslySetInnerHTML={{ __html: locationData.embedded_map }}>
+
+                </div>
             }
         </>
     )

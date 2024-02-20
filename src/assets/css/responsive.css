@@ -1,4 +1,3 @@
-/* Eventrox - Digital Conference HTML Template */
 
 @media only screen and (max-width: 1299px){
     .ofdmnd:before{
@@ -344,26 +343,7 @@
 
 @media only screen and (max-width: 1023px){
 	
-	.main-header,
-	.main-header.fixed-header,
-	.main-header .main-box{
-		/* position: relative !important; */
-		background-color: #;
-	}
-
-	.main-header .main-box{
-		
-	}
-
-	.header-style-two,
-	.header-style-two .main-box{
-		
-	}
-
-	.header-style-two .outer-box, 
-	.header-style-two .logo-box, 
-	.header-style-two .main-menu .navigation > li{
-	}
+	
 
 	.header-style-two .outer-box .theme-btn{
 		background-color: #e1137b;
@@ -995,10 +975,7 @@
 		font-size: 42px;
 	}
 	
-	.banner-carousel .content-box h2{
-		
-	}
-
+	
 	.banner-carousel .swiper-slide{
 		padding: 160px 0;
 	}
@@ -1039,13 +1016,7 @@
 		padding: 70px 0;
 	}
 
-	.why-choose-us,
-	.contact-page-section,
-	.sidebar-page-container,
-	.fun-fact-section,
-	.speaker-detail,
-	.about-section{
-	}
+	
 
 	.faq-section,
 	.pricing-section-three,
@@ -1089,20 +1060,13 @@
 		font-size: 38px;
 	}
 
-	.video-section{
-	}
-
-	.main-footer .widgets-section{
-	}
+	
 
 	.register-section .title-column{
 		width: 100%;
 	}
 
-	.header-style-two .nav-outer{
-		padding-top: ;
-	}
-
+	
 	.banner-conference{
 		padding-top: 150px;
 	}
@@ -1613,13 +1577,7 @@
 		margin-bottom:60px;
 	}
 	
-	.call-to-action .content-box h2,
-	.about-section-two .content-column .sec-title h2,
-	.fluid-section-one .content-column h3,
-	.video-section .content-box h2,
-	.banner-carousel .content-box h2{
-	}
-
+	
 	.blog-single h2,
 	.event-detail .content-box h2,
 	.banner-carousel .content-box .title,
@@ -2050,7 +2008,7 @@
     }
     
     .abcpgb {
-        padding: 15px;
+        padding: 0px;
     }
     .insabtim {
         padding-right: 90px;
@@ -2299,9 +2257,7 @@
         font-size: 30px;
     }
     
-    .wstnwt {
-        /*padding: 15px 15px 5px 45px;*/
-    }
+    
     .wstnwt h3 {
         font-size: 17px;
     }
@@ -2328,13 +2284,6 @@
 }
 
 
-/*** 
-
-====================================================================
-		Right To Left Responsive
-====================================================================
-
-***/
 
 
 @media only screen and (max-width: 1139px){
@@ -2572,6 +2521,3 @@
 	
 }
 
-@media only screen and (max-width: 479px) {
-
-}

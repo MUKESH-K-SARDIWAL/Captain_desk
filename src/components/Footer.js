@@ -1,73 +1,98 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { logo } from '../services/images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons'
+import { Link } from 'react-router-dom'
+import { getData } from '../services/apiService'
+import { api_url } from '../services/env'
+import { memo } from 'react'
 
-export const Footer = () => {
+const Footer = memo(function Footer() {
+    const [footerData, setFooterData] = useState(null);
+
+    useEffect(() => {
+        getFooterData();
+    }, [])
+
+    const getFooterData = () => {
+        getData(api_url.contactInfo)
+            .then(async (response) => {
+                const resp = await response.json();
+                setFooterData(resp?.data)
+                console.log(`resp?.data==>`, resp?.data);
+            })
+            .catch((err) => { console.log(err) })
+    }
+
     return (
         <footer className="main-footer bgdep">
-            {/*Widgets Section*/}
-            <div className="widgets-section">
-                <div className="auto-container">
-                    <div className="row">
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div className="ftrsc wow fadeInUp">
-                                <div className="ftrscim">
-                                    <a href="index.php"><img src={logo} /></a>
+            {footerData ?
+                <div className="widgets-section">
+                    <div className="auto-container">
+                        <div className="row">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div className="ftrsc wow fadeInUp">
+                                    <div className="ftrscim">
+                                        <a href="index.php"><img src={logo} /></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-4 col-sm-4 wow fadeInUp">
-                            <div className="ftebxd">
-                                <h3>Our Address</h3>
-                                <p>4th Floor, 124B, Southern Ave, Golpark, Hindustan Park, Gariahat, Kolkata-29</p>
-                                <ul className="social-icon-one social-icon-colored">
-                                    <li><a href="#"><FontAwesomeIcon size="xs" className='fab' icon={faFacebook} /></a></li>
-                                    <li><a href="#"><FontAwesomeIcon size="xs" className='fab' icon={faXTwitter} /></a></li>
-                                    <li><a href="#"><FontAwesomeIcon size="xs" className='fab' icon={faInstagram} /></a></li>
-                                    <li><a href="#"><FontAwesomeIcon size="xs" className='fab' icon={faLinkedin} /></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="col-md-4 col-sm-4 wow fadeInUp">
-                            <div className="ftebxd">
-                                <h3>Order Online</h3>
-                                <p>If you want to book a table, You can contact with our staff</p>
-                                <h4><a href="tel:+918597898654">+91 85978 98654</a></h4>
-                            </div>
-                        </div>
-                        <div className="col-md-4 col-sm-4 wow fadeInUp">
-                            <div className="ftebxd">
-                                <h3>Open Hours</h3>
-                                <p><span>Sun - Mon </span>  09:00 AM - 10:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/*Footer Bottom*/}
-                <div className="footer-bottom">
-                    <div className="auto-container">
-                        <div className="inner-container clearfix">
-                            <div className="row">
-                                <div className="col-md-6 col-sm-12">
-                                    <ul className="ftrsctxul2">
-                                        <li><a href="careers.php">Careers</a></li>
-                                        <li><a href="privacy_policy.php">Privacy Policy</a></li>
-                                        <li><a href="disclaimer.php">Disclaimer</a></li>
+                        <div className="row">
+                            <div className="col-md-4 col-sm-4 wow fadeInUp">
+                                <div className="ftebxd">
+                                    <h3>Our Address</h3>
+                                    <p>{footerData?.address}</p>
+                                    <ul className="social-icon-one social-icon-colored">
+                                        <li><a href={footerData?.facebook}><FontAwesomeIcon size="xs" className='fab' icon={faFacebook} /></a></li>
+                                        <li><a href={footerData?.twitter}><FontAwesomeIcon size="xs" className='fab' icon={faXTwitter} /></a></li>
+                                        <li><a href={footerData?.instagram}><FontAwesomeIcon size="xs" className='fab' icon={faInstagram} /></a></li>
+                                        <li><a href={footerData?.linkedin}><FontAwesomeIcon size="xs" className='fab' icon={faLinkedin} /></a></li>
                                     </ul>
                                 </div>
-                                <div className="col-md-6 col-sm-12">
-                                    <div className="copyright-text">
-                                        <p>© Copyright 2023 All Rights Reserved </p>
+                            </div>
+                            <div className="col-md-4 col-sm-4 wow fadeInUp">
+                                <div className="ftebxd">
+                                    <h3>Order Online</h3>
+                                    <p>{footerData?.order_online}</p>
+                                    <h4><a>{footerData?.phone_code + ' ' + footerData?.contact}</a></h4>
+                                </div>
+                            </div>
+                            <div className="col-md-4 col-sm-4 wow fadeInUp">
+                                <div className="ftebxd">
+                                    <h3>Open Hours</h3>
+                                    <p><span>{footerData?.open_day} </span>  {footerData?.open_hours}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/*Footer Bottom*/}
+                    <div className="footer-bottom">
+                        <div className="auto-container">
+                            <div className="inner-container clearfix">
+                                <div className="row">
+                                    <div className="col-md-6 col-sm-12">
+                                        <ul className="ftrsctxul2">
+                                            <li>
+                                                <Link to={'/career'}>Careers</Link>
+                                            </li>
+                                            <li><Link to={'/privacy-policy'}>Privacy Policy</Link></li>
+                                            <li><Link to={'/disclaimer'}>Disclaimer</Link></li>
+                                        </ul>
+                                    </div>
+                                    <div className="col-md-6 col-sm-12">
+                                        <div className="copyright-text">
+                                            <p>© Copyright 2023 All Rights Reserved </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> : null}
         </footer>
     )
-}
+})
+
+
+export default Footer

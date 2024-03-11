@@ -43,7 +43,7 @@ const Career = () => {
             .then(async (response) => {
                 const resp = await response.json();
                 setCareerData(resp?.data)
-                console.log(`resp?.data==>`, resp?.data);
+                // console.log(`resp?.data==>`, resp?.data);
             })
             .catch((err) => { console.log(err) })
     }
@@ -53,7 +53,7 @@ const Career = () => {
             .then(async (response) => {
                 const resp = await response.json();
                 setEmployeeData(resp?.data)
-                console.log(`resp?.data==>`, resp?.data);
+                // console.log(`resp?.data==>`, resp?.data);
             })
             .catch((err) => { console.log(err) })
     }

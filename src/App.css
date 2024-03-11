@@ -65,7 +65,7 @@ body {
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Josefin Sans', sans-serif !important;
   letter-spacing: 0.5px;
 }
 
@@ -104,6 +104,10 @@ textarea {
   overflow: hidden;
 }
 
+.text-left {
+  text-align: left !important;
+}
+
 p,
 .text {
   position: relative;
@@ -130,6 +134,12 @@ p,
 
 .medium-container {
   max-width: 850px;
+}
+
+.qr_code_footer {
+  width: 150px;
+  height: 150px;
+  margin: auto;
 }
 
 .page-wrapper {
@@ -976,6 +986,7 @@ img {
   position: static;
   /* float: ; */
 }
+
 .navbar-toggler:focus {
   box-shadow: 0 0 0 transparent !important;
 }
@@ -13530,7 +13541,7 @@ img {
 }
 
 .msnvsb {
-  background-image: url(./assets/img/sport_bar.jpg);
+  /* background-image: url(./assets/img/sport_bar.jpg); */
   background-color: #000000db;
   background-blend-mode: color-dodge;
   background-size: cover;
@@ -20030,7 +20041,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 }
 
-#iframe > iframe{
+#iframe>iframe {
   width: 100% !important;
   height: 400px !important;
 }

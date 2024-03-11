@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { api_url } from '../services/env'
 import { getData } from '../services/apiService'
+import WOW from 'wowjs';
+import '../assets/css/animate.css';
 
 const Event = () => {
     const { pathname } = useLocation();
@@ -9,14 +11,23 @@ const Event = () => {
     const [baseUrl, setBaseUrl] = useState(null);
     useEffect(() => {
         getEventData();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        setTimeout(() => {
+            const wow = new WOW.WOW({
+                boxClass: 'wow',
+            });
+            wow.init();
+        }, 1000);
+    }, []);
 
     const getEventData = () => {
 
         getData(api_url?.event)
             .then(async (response) => {
                 const resp = await response.json();
-                console.log(`  resp?.data?==>`, resp);
+                // console.log(`  resp?.data?==>`, resp);
                 setBaseUrl(resp?.base_url);
                 setEventData(resp?.data)
             })
@@ -39,7 +50,7 @@ const Event = () => {
             <section className="about-section secexp bgdep2">
                 <div className="auto-container">
                     {eventData &&
-                        <div className="row">
+                        <div className="row wow fadeInUp">
                             {eventData.map((value, idx) => {
                                 return (
                                     <div className="col-md-4 col-sm-6  evbnglmn" key={idx}>

@@ -72,9 +72,9 @@ const Location = () => {
 
     const handleChange = (event) => {
 
-        console.warn(event.target.name, event.target.value);
+        // console.warn(event.target.name, event.target.value);
         const { name, value } = event.target;
-        console.warn(name, value);
+        // console.warn(name, value);
         setUserData(prev => ({ ...prev, [name]: value }));
     }
 
@@ -114,7 +114,7 @@ const Location = () => {
                                 <div className="contptxu">
                                     <img src={cont1} />
                                     <h6>Call Us</h6>
-                                    <p><a href="tel:+918597898654">{locationData.phone_code + ' ' + locationData.contact}</a></p>
+                                    <p ><a >{locationData.phone_code + ' ' + locationData.contact}</a></p>
                                 </div>
                                 <div className="contptxu">
                                     <img src={cont2} />

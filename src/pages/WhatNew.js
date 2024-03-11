@@ -4,13 +4,16 @@ import WhatsNewDetailCard from '../components/WhatsNewDetailCard'
 import { api_url } from '../services/env'
 import { getData } from '../services/apiService'
 import DeckCard from '../components/DeckCard'
+import WOW from 'wowjs';
+import '../assets/css/animate.css';
 
 const WhatNew = () => {
     const { pathname } = useLocation();
     const [modalVisible, setModalVisible] = useState(false)
     const [whatsNewData, SetWhatNewData] = useState(null);
     const [baseUrl, setBaseUrl] = useState(null);
-    const [modalData, setModalData] = useState(null)
+    const [modalData, setModalData] = useState(null);
+
     useEffect(() => {
         getWhatNewData()
     }, [])
@@ -23,7 +26,7 @@ const WhatNew = () => {
                 setBaseUrl(resp?.base_url)
                 let data = resp?.data.find((el) => el.key_name == 'whats_new')
                 SetWhatNewData(data?.key_data)
-                console.log(`resp?.data==>`, data?.key_data);
+                // console.log(`resp?.data==>`, data?.key_data);
             })
             .catch((err) => { console.log(err) })
     }
@@ -36,6 +39,15 @@ const WhatNew = () => {
         setModalVisible(true)
     }, [])
 
+    useEffect(() => {
+        setTimeout(() => {
+            const wow = new WOW.WOW({
+                boxClass: 'wow',
+            });
+            wow.init();
+        }, 1000);
+    }, []);
+
     return (
         <>
             <section className="banner-section">
@@ -47,7 +59,7 @@ const WhatNew = () => {
             <section className="about-section secexp bgdep2">
                 <div className="auto-container">
                     <div className="row rwjstct">
-                        <div className="col-lg-12 col-md-112 col-sm-12">
+                        <div className="col-lg-12 col-md-112 col-sm-12 wow fadeInUp">
                             {
                                 whatsNewData &&
                                 whatsNewData.map((val, idx) =>

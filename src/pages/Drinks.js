@@ -40,30 +40,7 @@ const Drinks = () => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    // const handleChecked = (event) => {
-
-    //     const { name, checked } = event.target;
-    //     let updatedCheckboxes;
-    //     if (checked) {
-    //         updatedCheckboxes = [...selectedCheckboxes, name];
-    //     } else {
-    //         updatedCheckboxes = selectedCheckboxes.filter(item => item !== name);
-    //         if (updatedCheckboxes.length === 0) {
-    //             updatedCheckboxes = [];
-    //         }
-    //     }
-
-    //     setSelectedCheckboxes(updatedCheckboxes);
-
-    //     let url = updatedCheckboxes.length == 0 ? '' : `?id=1&subcategory_id=${updatedCheckboxes.join(',')}`
-    //     getData(api_url.menu + url)
-    //         .then(async (response) => {
-    //             const resp = await response.json();
-    //             let drinks = resp?.data.find((el) => el.key_name == 'Drinks');
-    //             setDrinksData(drinks.key_data);
-    //         })
-    //         .catch((err) => { console.log(err) })
-    // }
+   
     const handleChecked = (event) => {
         const { name, checked } = event.target;
         let updatedCheckboxes;
@@ -76,13 +53,15 @@ const Drinks = () => {
         setSelectedCheckboxes(updatedCheckboxes);
         callApi(updatedCheckboxes);
     };
+
     const callApi = (checkboxes) => {
-        let url = checkboxes.length === 0 ? '' : `?id=1&subcategory_id=${checkboxes.join(',')}`;
+        let url = checkboxes.length === 0 ? '?id=1' : `?id=1&subcategory_id=${checkboxes.join(',')}`;
         getData(api_url.menu + url)
             .then(async (response) => {
                 const resp = await response.json();
-                let drinks = resp?.data.find((el) => el.key_name === 'Drinks');
-                setDrinksData(drinks?.key_data || []);
+                // console.log(`resp==>`,resp);
+                // let drinks = resp?.data.find((el) => el.key_name === 'Drinks');
+                setDrinksData(resp?.data?.key_data || []);
             })
             .catch((err) => {
                 console.log(err);
@@ -106,8 +85,8 @@ const Drinks = () => {
         getData(api_url.menu + `?id=1&search=${searchTerm}`)
             .then(async (response) => {
                 const resp = await response.json();
-                let drinks = resp?.data.find((el) => el.key_name == 'Drinks');
-                setDrinksData(drinks.key_data);
+                // let drinks = resp?.data.find((el) => el.key_name == 'Drinks');
+                setDrinksData(resp?.data.key_data);
             })
             .catch((err) => { console.log(err) })
     };
@@ -196,42 +175,7 @@ const Drinks = () => {
                                                                     )
                                                                 })}
 
-                                                                {/* <div className="col-md-6">
-                                                                    <div className="fdmnscpu">
-                                                                        <div className="fdmnscpu1 fdmnscpu1dlf">
-                                                                            <h4><span>Dewar's White Label</span><span className="fdmnscpu1dlfm">30ML</span></h4>
-                                                                            <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                                                        </div>
-                                                                        <div className="fdmnscpu3" />
-                                                                        <div className="fdmnscpu2">
-                                                                            <h4><span>₹185</span></h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-6">
-                                                                    <div className="fdmnscpu">
-                                                                        <div className="fdmnscpu1 fdmnscpu1dlf">
-                                                                            <h4><span>Dewar's White Label</span><span className="fdmnscpu1dlfm">30ML</span></h4>
-                                                                            <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                                                        </div>
-                                                                        <div className="fdmnscpu3" />
-                                                                        <div className="fdmnscpu2">
-                                                                            <h4><span>₹185</span></h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-md-6">
-                                                                    <div className="fdmnscpu">
-                                                                        <div className="fdmnscpu1 fdmnscpu1dlf">
-                                                                            <h4><span>Dewar's White Label</span><span className="fdmnscpu1dlfm">30ML</span></h4>
-                                                                            <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                                                        </div>
-                                                                        <div className="fdmnscpu3" />
-                                                                        <div className="fdmnscpu2">
-                                                                            <h4><span>₹185</span></h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> */}
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>

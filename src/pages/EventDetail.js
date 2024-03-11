@@ -21,7 +21,7 @@ const EventDetail = () => {
         getData(api_url.event + `?id=${id}`)
             .then(async response => {
                 const resp = await response.json();
-                console.warn(`resp?.data?==>`, resp?.data);
+                // console.warn(`resp?.data?==>`, resp?.data);
                 setBaseUrl(resp?.base_url);
                 setEventDetail(resp?.data)
             })

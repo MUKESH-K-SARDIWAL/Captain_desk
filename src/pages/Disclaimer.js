@@ -15,7 +15,7 @@ const Disclaimer = () => {
             .then(async (response) => {
                 const resp = await response.json();
                 setDisclaimerData(resp?.data)
-                console.log(`resp?.data==>`, resp?.data);
+                // console.log(`resp?.data==>`, resp?.data);
             })
             .catch((err) => { console.log(err) })
     }

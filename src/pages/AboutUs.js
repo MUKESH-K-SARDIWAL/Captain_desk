@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { getData } from '../services/apiService';
 import { api_url } from '../services/env';
 import { Banner } from '../components/Banner';
+import WOW from 'wowjs';
+import '../assets/css/animate.css';
 
 export const AboutUs = () => {
 
@@ -24,7 +26,7 @@ export const AboutUs = () => {
         getData(api_url.about_us)
             .then(async response => {
                 const resp = await response.json();
-                console.warn(`resp?.data?==>`, resp);
+                // console.warn(`resp?.data?==>`, resp);
                 setBaseUrl(resp?.base_url);
                 let aboutUs = resp?.data.find(el => el.key_name == "About");
                 let team = resp?.data.find(el => el.key_name == "employes");
@@ -45,6 +47,14 @@ export const AboutUs = () => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            const wow = new WOW.WOW({
+                boxClass: 'wow',
+            });
+            wow.init();
+        }, 3000);
+    }, []);
     return (
         <>
             {/* <Header /> */}
@@ -59,7 +69,7 @@ export const AboutUs = () => {
 
                                 <div className=" col-lg-7 col-md-7 col-sm-12">
 
-                                    <div className="insabtx m-0">
+                                    <div className="insabtx m-0 wow fadeInLeft">
                                         <h4>{aboutUsData.about[0].title}</h4>
                                         <h2>{aboutUsData.about[0].header}</h2>
                                         <div className="insabtx m-0" dangerouslySetInnerHTML={
@@ -69,7 +79,7 @@ export const AboutUs = () => {
                                     </div>
 
                                 </div>
-                                <div className="col-md-5 col-sm-12  ">
+                                <div className="col-md-5 col-sm-12 wow fadeInRight ">
                                     <div className="backgaj ">
                                         <img src={baseUrl + aboutUsData.about[0].media} />
                                     </div>
@@ -81,10 +91,10 @@ export const AboutUs = () => {
             </section>
             {/*End About Section */}
             {aboutUsData.visionSec.length > 0 &&
-                <section className="bout-section  secexp msnvsb">
+                <section className="bout-section  secexp msnvsb " style={{ backgroundImage: `url(${baseUrl+aboutUsData.visionSec[0].image})`  }}>
                     <div className="auto-container">
                         <div className="row">
-                            <div className="col-md-12 col-sm-12">
+                            <div className="col-md-12 col-sm-12 wow fadeInUp">
                                 <div className="msnvsbu" dangerouslySetInnerHTML={
                                     { __html: aboutUsData.visionSec[0].description }
                                 } />
@@ -101,7 +111,7 @@ export const AboutUs = () => {
                             <div className="ttlhdb1" /><div className="ttlhdb2" /></span></h2>
                     </div>
                     {aboutUsData.ourTeam.length > 0 &&
-                        <div className="row  nefcfmn">
+                        <div className="row  nefcfmn wow fadeInUp">
                             {
                                 aboutUsData.ourTeam.map((val, idx) => {
                                     return (

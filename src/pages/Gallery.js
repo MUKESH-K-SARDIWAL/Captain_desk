@@ -3,9 +3,13 @@ import { useLocation } from 'react-router-dom'
 import { Fancybox } from '../services/helper'
 import { api_url } from '../services/env'
 import { getData } from '../services/apiService'
+import WOW from 'wowjs';
+import '../assets/css/animate.css';
 let paginate = 1;
 let isLast = false;
 let loading = false;
+
+
 const Gallery = () => {
 
     const { pathname } = useLocation();
@@ -23,7 +27,7 @@ const Gallery = () => {
                 const resp = await response.json();
                 if (resp?.data?.current_page == 1) {
                     setBaseUrl(resp?.base_url);
-                    console.log(`resp?.data?.data==>`, resp?.data?.data);
+                    // console.log(`resp?.data?.data==>`, resp?.data?.data);
                     setGalleryData([...resp?.data?.data])
                 }
                 else {
@@ -43,6 +47,15 @@ const Gallery = () => {
     }, [pathname]);
 
     useEffect(() => {
+        setTimeout(() => {
+            const wow = new WOW.WOW({
+                boxClass: 'wow',
+            });
+            wow.init();
+        }, 3000);
+    }, []);
+
+    useEffect(() => {
         window.addEventListener("scroll", hangleInfiniteScroll);
         return () => window.removeEventListener("scroll", hangleInfiniteScroll)
     }, [])
@@ -50,7 +63,7 @@ const Gallery = () => {
     const hangleInfiniteScroll = async () => {
         try {
             if (window.innerHeight + document.documentElement.scrollTop + 506 >= document.documentElement.scrollHeight) {
-                console.log(`!isLast && !loading==>`, !isLast, !loading);
+                // console.log(`!isLast && !loading==>`, !isLast, !loading);
                 if (!isLast && !loading) {
                     getGalleryData(paginate);
                 }
@@ -75,13 +88,13 @@ const Gallery = () => {
                         },
                     }}
                 >
-                    <div className="auto-container">
+                    <div className="auto-container wow fadeInUp">
                         {
                             galleryData.length > 0 &&
                             <div className="row">
                                 {galleryData.map((val, idx) => {
                                     return (
-                                        val?.media_types == 'video' ? <div className="col-lg-4 col-md-4 col-sm-6 " key={idx}>
+                                        val?.media_types == 'video' ? <div className="col-lg-4 col-md-4 col-sm-6  " key={idx}>
                                             <div className="glrbim">
                                                 <video width="100%" height="250" controls >
                                                     <source src={baseUrl + val?.media} type="video/mp4" />

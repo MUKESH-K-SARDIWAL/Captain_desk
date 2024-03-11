@@ -6,7 +6,7 @@ import jQuery from '../assets/js/script.js';
 import { Link, NavLink } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { faFacebook, faInstagram, faLinkedin, faSquareXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faGoogle, faInstagram, faLinkedin, faSquareXTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { api_url } from '../services/env.js';
 import { getData } from '../services/apiService.js';
 
@@ -17,7 +17,7 @@ export const Header = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [sideNavData, setSideNavData] = useState(null);
-
+    const [baseUrl, setBaseUrl] = useState(null);
     useEffect(() => {
         getOffcanvasData();
     }, [])
@@ -26,7 +26,9 @@ export const Header = () => {
         getData(api_url.contactInfo)
             .then(async (response) => {
                 const resp = await response.json();
-                setSideNavData(resp?.data)
+                setSideNavData(resp?.data);
+                // console.log(`resp==>`, resp);
+                setBaseUrl(resp?.base_url)
             })
             .catch((err) => { console.log(err) })
     }
@@ -51,7 +53,7 @@ export const Header = () => {
                                     </div>
                                 </Navbar.Brand>
                             </div>
-                           
+
                             <Navbar.Toggle>
                                 <div className="hdr_righb" onClick={handleMenuClose} variant="primary" />
                             </Navbar.Toggle>
@@ -63,7 +65,7 @@ export const Header = () => {
                                         {/*Mobile Navigation Toggler*/}
                                         <div className="mobile-nav-toggler">
                                             {/* <div className="hdr_righbmnu" /> */}
-                                            </div>
+                                        </div>
                                         {/* Main Menu */}
                                         <nav className="main-menu navbar-expand-md navbar-light ">
                                             <div className="navbar-header">
@@ -137,12 +139,18 @@ export const Header = () => {
                                 <p>{sideNavData.address}</p>
                                 <p><a href={'tel:'}>{sideNavData?.phone_code + ' ' + sideNavData?.contact}</a></p>
                                 <p>Open Hours: {sideNavData?.open_hours}</p>
+                                <div className='qr_code_footer'>
+                                    <img src={baseUrl + sideNavData.qr_image} alt='' />
+                                </div>
                                 <ul className="social-icon-one social-icon-colored">
                                     <li><a href={sideNavData?.facebook}>
                                         <FontAwesomeIcon size="xs" className='fab' icon={faFacebook} />
                                     </a></li>
-                                    <li><a href={sideNavData?.twitter}>
-                                        <FontAwesomeIcon size="xs" className='fab' icon={faSquareXTwitter} />
+                                    <li><a href={sideNavData?.google ?? '#'}>
+                                        <FontAwesomeIcon size="xs" className='fab' icon={faGoogle} />
+                                    </a></li>
+                                    <li><a href={sideNavData?.whatsapp ?? '#'}>
+                                        <FontAwesomeIcon icon={faWhatsapp} size="xs" className='fab' />
                                     </a></li>
                                     <li><a href={sideNavData?.instagram}>
                                         <FontAwesomeIcon size="xs" className='fab' icon={faInstagram} />

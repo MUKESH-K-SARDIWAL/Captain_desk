@@ -13,4 +13,5 @@ export const api_url = {
     menu: 'menu',
     bookIn: 'reservations',
     pop_up:'popUp',
+    food_type:'food-types'
 }

@@ -5,7 +5,7 @@ import { getData } from '../services/apiService';
 import { api_url } from '../services/env';
 import Filter from '../components/Filter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faL, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const Foods = memo((props) => {
     const { pathname } = useLocation();
@@ -17,37 +17,30 @@ const Foods = memo((props) => {
     const [filterData, setFilterData] = useState(null);
     const [dishesFilterData, setdishesFilterData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [foodTypeData, setFoodTypeData] = useState(null);
+    const [checkVeg, setCheckVeg] = useState(false);
+
     useEffect(() => {
         getMenuData();
+        getFoodType();
     }, []);
 
-    const handleMainFilterChecked = (e) => {
-
-        const { name, checked } = e.target;
-        let updatedCheckboxes;
-
-        if (checked) {
-            updatedCheckboxes = [...mainFilterCheckboxes, name];
-        } else {
-            updatedCheckboxes = mainFilterCheckboxes.filter(item => item !== name);
-            if (updatedCheckboxes.length === 0) {
-                updatedCheckboxes = [];
-            }
+    const handleMainFilterChecked = (prosp) => {
+        if (prosp == 1) {
+            setCheckVeg(true)
         }
-
-        setMainFilterCheckboxes(updatedCheckboxes);
-
-        let url = `?id=2&subcategory_id=${updatedCheckboxes.join(',')}&foodTypeIds=${selectedCheckboxes.join(',')}&subSubCategories=${dishesFilterData.join(',')}`;
-
-        refreshData(url)
+        else {
+            setCheckVeg(false)
+        }
     }
+
 
     function refreshData(url) {
         getData(api_url.menu + url)
             .then(async (response) => {
                 const resp = await response.json();
-                let foods = resp?.data.find((el) => el.key_name == 'Foods');
-                setDrinksData(foods);
+                // console.log(`resp==>`, resp);
+                setDrinksData(resp?.data);
             })
             .catch((err) => { console.log(err) })
     }
@@ -59,6 +52,16 @@ const Foods = memo((props) => {
                 let foods = resp?.data.find((el) => el.key_name == 'Foods');
                 setDrinksData(foods);
                 setFilterData(foods);
+                setBaseUrl(resp?.base_url);
+            })
+            .catch((err) => { console.log(err) })
+    }
+
+    const getFoodType = () => {
+        getData(api_url.food_type)
+            .then(async (response) => {
+                const resp = await response.json();
+                setFoodTypeData(resp?.response)
                 setBaseUrl(resp?.base_url);
             })
             .catch((err) => { console.log(err) })
@@ -78,7 +81,7 @@ const Foods = memo((props) => {
 
         setSelectedCheckboxes(updatedCheckboxes);
 
-        let url = `?id=2&subcategory_id=${mainFilterCheckboxes.join(',')}&foodTypeIds=${updatedCheckboxes.join(',')}&subSubCategories=${dishesFilterData.join(',')}`;
+        let url = `?id=2&subcategory_id=${dishesFilterData.join(',')}&foodTypeIds=${updatedCheckboxes.join(',')}`;
 
         refreshData(url)
     }
@@ -98,7 +101,7 @@ const Foods = memo((props) => {
 
         setdishesFilterData(updatedCheckboxes);
 
-        let url = `?id=2&subcategory_id=${mainFilterCheckboxes.join(',')}&foodTypeIds=${selectedCheckboxes.join(',')}&subSubCategories=${updatedCheckboxes.join(',')}`;
+        let url = `?id=2&subcategory_id=${updatedCheckboxes.join(',')}&foodTypeIds=${selectedCheckboxes.join(',')}`;
 
         refreshData(url)
 
@@ -113,7 +116,6 @@ const Foods = memo((props) => {
         checkboxes.forEach((checkbox) => {
             checkbox.checked = false;
         });
-        // Call API with empty checkboxes array
         refreshData('?id=2')
     };
 
@@ -148,21 +150,23 @@ const Foods = memo((props) => {
                             <h2><span>Foods <div className="ttlhdb1" /><div className="ttlhdb2" /></span></h2>
                         </div>
                         <div className="fodflt1">
-                            {filterData && <ul>
-                                {
-                                    filterData.key_data.map((heading, ind) => {
-                                        return (
-                                            <li key={ind}>
-                                                <label className="conta">{heading.key_name}
-                                                    <input type="checkbox" name={heading.subcategory_id} onChange={handleMainFilterChecked} />
-                                                    <span className="checkmark" />
-                                                </label>
-                                            </li>
-                                        )
-                                    })
-                                }
+                            <ul>
 
-                            </ul>}
+                                <li >
+                                    <label className="conta">AC
+                                        <input type="radio" name='foodies' checked={checkVeg} onChange={() => handleMainFilterChecked(1)} />
+                                        <span className="checkmark" />
+                                    </label>
+                                </li>
+                                <li >
+                                    <label className="conta">Non AC
+                                        <input type="radio" name='foodies' checked={!checkVeg} onChange={() => handleMainFilterChecked(2)} />
+                                        <span className="checkmark" />
+                                    </label>
+                                </li>
+
+
+                            </ul>
                         </div>
                         <div className="fodflt2">
                             <div className="fodflt2u">
@@ -171,40 +175,34 @@ const Foods = memo((props) => {
                             </div>
                             <ul>
                                 <li> Item :</li>
-                                <li>
-                                    <label className="conta"><img src={veg} /> Veg
-                                        <input type="checkbox" name='1' onChange={handleFoodTypeFilter} />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="conta">
-                                        <img src={nonveg} /> Nonveg
-                                        <input type="checkbox" name='2' onChange={handleFoodTypeFilter} />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
+                                {foodTypeData &&
+                                    foodTypeData.map((items, val) => {
+                                        return (
+                                            <li key={val}>
+                                                <label className="conta">
+                                                    <img src={baseUrl + items?.image} /> {items?.food_type_name}
+                                                    <input type="checkbox" name={items?.id} onChange={handleFoodTypeFilter} />
+                                                    <span className="checkmark" />
+                                                </label>
+                                            </li>
+                                        )
+                                    })
+                                }
                             </ul>
                             <ul>
                                 <li> Dishes  :</li>
-                                <li>
-                                    <label className="conta"> Starter
-                                        <input type="checkbox" onChange={handleDishesFilter} name='1' />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="conta"> Main Course
-                                        <input type="checkbox" onChange={handleDishesFilter} name='2' />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="conta"> Dessert
-                                        <input type="checkbox" onChange={handleDishesFilter} name='3' />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
+                                {filterData &&
+                                    filterData.key_data.map((items, val) => {
+                                        return (
+                                            <li key={val}>
+                                                <label className="conta"> {items.key_name}
+                                                    <input type="checkbox" onChange={handleDishesFilter} name={items?.subcategory_id} />
+                                                    <span className="checkmark" />
+                                                </label>
+                                            </li>
+                                        )
+                                    })
+                                }
                             </ul>
                         </div>
                         <div className="fodflt3">
@@ -246,16 +244,25 @@ const Foods = memo((props) => {
                                                                                     <div className="fdmnscpu1">
                                                                                         <h4>
                                                                                             <ul>
-                                                                                                <li>
-                                                                                                    {/* <img src={baseUrl + card?.meal_image} /> */}
-                                                                                                </li>
+                                                                                                <ul>
+                                                                                                    {
+                                                                                                        card.food_types.map((imageItem, imageindex) => {
+                                                                                                            return (
+                                                                                                                <li key={imageindex} className='mx-1'>
+                                                                                                                    <img src={baseUrl + imageItem.image} />
+                                                                                                                </li>
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+
+                                                                                                </ul>
                                                                                             </ul>
                                                                                             <span>{card?.meal_name}</span></h4>
                                                                                         <p>{card?.meal_description}</p>
                                                                                     </div>
                                                                                     <div className="fdmnscpu3" />
                                                                                     <div className="fdmnscpu2">
-                                                                                        <h4><span>{card?.meal_amount}</span></h4>
+                                                                                        <h4><span>{checkVeg == false ? card?.meal_amount : card?.meal_amount_ac}</span></h4>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

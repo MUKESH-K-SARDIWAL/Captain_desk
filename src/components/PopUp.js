@@ -5,7 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const PopUp = ({ popUp, baseUrl }) => {
 
-    console.log(`popUp==>`, popUp);
+    // console.log(`popUp==>`, popUp);
 
     const hidePopUp = () => {
         let popUp = document.getElementById('popUp');
